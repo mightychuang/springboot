@@ -17,7 +17,17 @@ public class App
 {
     public static void main( String[] args )
     {
-    	ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
+//    	ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
+    	
+    	/**
+    	 * 硬编码的方式指定生效文件
+    	 * 
+    	 * 也可以通过启动时外部配置： --spring.profiles.active=dev,test
+    	 * 可以启用多个配置,相同key取最后一次出现的值
+    	 */
+    	SpringApplication application = new SpringApplication(App.class);
+    	application.setAdditionalProfiles("my","test");
+    	ConfigurableApplicationContext context = application.run(args);
     	
     	AppConfig appConfig = context.getBean(AppConfig.class);
     	appConfig.show();
@@ -30,6 +40,9 @@ public class App
     	
     	MyConfig myConfig = context.getBean(MyConfig.class);
     	myConfig.show();
+    	
+    	System.out.println("*************currentenv*************"+context.getEnvironment().getProperty("currentenv")+"\n\n");
+    	System.out.println("*************time*************"+context.getEnvironment().getProperty("time")+"\n\n");
     	
     	
     }
