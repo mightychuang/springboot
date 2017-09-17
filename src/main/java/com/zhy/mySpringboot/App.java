@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import com.zhy.mySpringboot.beanAssembly.MyBeans;
 import com.zhy.mySpringboot.config.AppConfig;
 import com.zhy.mySpringboot.config.JdbcConfig;
 import com.zhy.mySpringboot.config.MyConfig;
@@ -29,6 +30,10 @@ public class App
     	application.setAdditionalProfiles("my","test");
     	ConfigurableApplicationContext context = application.run(args);
     	
+    	System.out.println("*************currentenv*************"+context.getEnvironment().getProperty("currentenv")+"\n\n");
+    	System.out.println("*************time*************"+context.getEnvironment().getProperty("time")+"\n\n");
+    	
+    	
     	AppConfig appConfig = context.getBean(AppConfig.class);
     	appConfig.show();
     	
@@ -41,9 +46,14 @@ public class App
     	MyConfig myConfig = context.getBean(MyConfig.class);
     	myConfig.show();
     	
-    	System.out.println("*************currentenv*************"+context.getEnvironment().getProperty("currentenv")+"\n\n");
-    	System.out.println("*************time*************"+context.getEnvironment().getProperty("time")+"\n\n");
+    	Runnable run =(Runnable) context.getBean("createRunable");
+    	run.run();
     	
+//    	Runnable devRun =(Runnable) context.getBean("createRunableDev");
+//    	devRun.run(); //空指针
+    	
+    	Runnable testRun =(Runnable) context.getBean("createRunableTest");
+    	testRun.run();
     	
     }
 }
